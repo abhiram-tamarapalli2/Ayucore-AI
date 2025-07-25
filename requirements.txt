@@ -1,11 +1,14 @@
+numpy<2
 sentence-transformers==2.2.2
+huggingface_hub==0.17.3
 langchain
 flask
 pypdf
 python-dotenv
-pinecone[grpc]
+pinecone-client
 langchain-pinecone
 langchain_community
-langchain_openai
+langchain_google_genai
+google-generativeai
 langchain_experimental
 -e .
