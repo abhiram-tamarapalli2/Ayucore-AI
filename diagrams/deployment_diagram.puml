@@ -1,0 +1,115 @@
+@startuml Medical_Chatbot_Deployment
+
+!theme plain
+skinparam node {
+    BackgroundColor lightcyan
+    BorderColor darkblue
+}
+
+title Medical Chatbot - Deployment Architecture
+
+node "Client Device" {
+    [Web Browser] as browser
+    [HTML/CSS/JS] as frontend
+    
+    browser -> frontend
+}
+
+node "Application Server" {
+    [Flask Application] as flask
+    [Python Runtime] as python
+    [Virtual Environment] as venv
+    
+    flask -> python
+    python -> venv
+}
+
+node "Environment Configuration" {
+    [.env file] as env
+    [API Keys] as keys
+    [Configuration] as config
+    
+    env -> keys
+    env -> config
+}
+
+cloud "External Services" {
+    node "Pinecone Cloud" {
+        [Vector Database] as vectordb
+        [Index: medicalbot] as index
+        [Serverless Computing] as serverless
+        
+        vectordb -> index
+        vectordb -> serverless
+    }
+    
+    node "Google Cloud" {
+        [Gemini API] as gemini
+        [AI Platform] as aiplatform
+        [Global Infrastructure] as infrastructure
+        
+        gemini -> aiplatform
+        gemini -> infrastructure
+    }
+    
+    node "HuggingFace Hub" {
+        [Model Repository] as modelrepo
+        [all-MiniLM-L6-v2] as model
+        [Transformers Library] as transformers
+        
+        modelrepo -> model
+        modelrepo -> transformers
+    }
+}
+
+folder "Project Structure" {
+    [src/] as src
+    [templates/] as templates
+    [static/] as static
+    [data/] as data
+    [Medical PDFs] as pdfs
+    
+    src -> templates
+    src -> static
+    data -> pdfs
+}
+
+' Connections
+browser -down-> flask : HTTP/HTTPS
+flask -down-> vectordb : API Calls
+flask -down-> gemini : API Calls
+flask -down-> modelrepo : Model Download
+flask -left-> env : Load Config
+
+note right of browser
+    **Client Requirements:**
+    - Modern web browser
+    - JavaScript enabled
+    - Internet connection
+end note
+
+note right of flask
+    **Server Requirements:**
+    - Python 3.8+
+    - 4GB+ RAM
+    - Internet access
+    - Environment variables
+end note
+
+note right of vectordb
+    **Pinecone Features:**
+    - Managed vector database
+    - Auto-scaling
+    - High availability
+    - Global distribution
+end note
+
+note right of gemini
+    **Gemini AI Features:**
+    - Large language model
+    - API-based access
+    - Multi-modal capabilities
+    - Rate limiting
+end note
+
+@enduml

@@ -1,0 +1,128 @@
+@startuml Medical_Chatbot_Component_Diagram
+
+!theme plain
+skinparam component {
+    BackgroundColor lightgreen
+    BorderColor darkgreen
+}
+
+title Medical Chatbot - Detailed Component Diagram
+
+package "Frontend Components" {
+    component [chat.html] as chathtml
+    component [style.css] as css
+    component [jQuery AJAX] as jquery
+    
+    chathtml -down-> css : uses
+    chathtml -down-> jquery : includes
+}
+
+package "Flask Application" {
+    component [app.py] as app
+    component [Route Handlers] as routes
+    component [Environment Config] as env
+    
+    app -down-> routes : defines
+    app -down-> env : loads
+}
+
+package "Source Modules" {
+    component [src/helper.py] as helper
+    component [src/prompt.py] as prompt
+    component [src/__init__.py] as init
+    
+    helper -right-> prompt : imports
+}
+
+package "Core Functions" {
+    component [load_pdf_file()] as loadpdf
+    component [text_split()] as textsplit  
+    component [download_hugging_face_embeddings()] as embedfunc
+    
+    loadpdf -right-> textsplit : processes
+    textsplit -right-> embedfunc : feeds
+}
+
+package "External Libraries" {
+    component [LangChain] as langchain
+    component [PyPDFLoader] as pypdf
+    component [RecursiveCharacterTextSplitter] as splitter
+    component [HuggingFaceEmbeddings] as hfembed
+    component [PineconeVectorStore] as pineconevs
+    component [ChatGoogleGenerativeAI] as geminiai
+    
+    langchain -down-> pypdf : uses
+    langchain -down-> splitter : uses
+    langchain -down-> hfembed : uses
+    langchain -down-> pineconevs : uses
+    langchain -down-> geminiai : uses
+}
+
+package "Data Storage" {
+    component [data/ folder] as datafolder
+    component [Medical PDFs] as pdfs
+    component [.env file] as envfile
+    
+    datafolder -down-> pdfs : contains
+}
+
+package "Cloud Services" {
+    cloud "Pinecone Cloud" {
+        component [Vector Index: medicalbot] as vectorindex
+        component [Cosine Similarity] as cosine
+        component [384-dim Vectors] as vectors
+        
+        vectorindex -down-> cosine : uses
+        vectorindex -down-> vectors : stores
+    }
+    
+    cloud "Google Cloud" {
+        component [Gemini-1.5-Flash] as geminimodel
+        component [API Gateway] as apigateway
+        
+        geminimodel -down-> apigateway : accessed via
+    }
+}
+
+package "Setup Scripts" {
+    component [store_index.py] as storeindex
+    component [test_setup.py] as testsetup
+    component [check_pinecone.py] as checkpinecone
+    component [template.py] as template
+    
+    storeindex -right-> testsetup : validates
+    testsetup -right-> checkpinecone : uses
+}
+
+' Component relationships
+app -down-> helper : imports
+app -down-> prompt : imports
+helper -down-> loadpdf : contains
+helper -down-> textsplit : contains
+helper -down-> embedfunc : contains
+
+loadpdf -down-> pypdf : uses
+textsplit -down-> splitter : uses
+embedfunc -down-> hfembed : uses
+
+app -down-> pineconevs : uses
+app -down-> geminiai : uses
+
+storeindex -down-> helper : uses
+storeindex -down-> vectorindex : creates
+
+jquery -down-> routes : calls
+routes -down-> langchain : processes with
+
+envfile -down-> app : configures
+pdfs -down-> storeindex : processed by
+
+vectorindex -up-> pineconevs : accessed by
+geminimodel -up-> geminiai : accessed by
+
+note right of chathtml : "Responsive UI with\nreal-time messaging"
+note right of helper : "Utility functions for\nPDF and embedding"
+note right of vectorindex : "Serverless vector DB\nwith auto-scaling"
+note right of geminimodel : "Advanced LLM for\nmedical responses"
+
+@enduml

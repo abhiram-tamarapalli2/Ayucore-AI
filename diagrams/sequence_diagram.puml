@@ -1,0 +1,57 @@
+@startuml Medical_Chatbot_Sequence_Diagram
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam sequenceParticipant underline
+
+title Medical Chatbot - Query Processing Sequence
+
+actor User
+participant "Web Browser" as Browser
+participant "Flask Server" as Flask
+participant "RAG Chain" as RAG
+participant "HuggingFace" as HF
+participant "Pinecone DB" as Pinecone
+participant "Gemini AI" as Gemini
+
+User -> Browser: Types medical question
+Browser -> Flask: POST /get (AJAX)
+note right: Form data with\nuser message
+
+Flask -> RAG: invoke({"input": query})
+note right: Start RAG pipeline
+
+RAG -> HF: encode(user_query)
+note right: Convert query to\n384-dim vector
+
+HF -> RAG: embedding_vector
+RAG -> Pinecone: similarity_search(vector, k=3)
+note right: Find top 3 most\nrelevant documents
+
+Pinecone -> RAG: relevant_documents[]
+note right: Medical document\nchunks with scores
+
+RAG -> RAG: assemble_context(docs, prompt)
+note right: Combine retrieved docs\nwith system prompt
+
+RAG -> Gemini: generate(context + query)
+note right: Send enriched prompt\nto AI model
+
+Gemini -> RAG: generated_response
+note right: Medical advice based\non retrieved context
+
+RAG -> Flask: response["answer"]
+Flask -> Browser: response_text
+Browser -> User: Display medical advice
+
+note over User, Gemini
+    **End-to-End Latency Breakdown:**
+    - Embedding Generation: ~10ms
+    - Vector Search: ~5ms  
+    - AI Generation: ~500ms
+    - Network + Processing: ~50ms
+    **Total: ~565ms**
+end note
+
+@enduml

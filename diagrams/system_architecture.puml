@@ -1,0 +1,96 @@
+@startuml Medical_Chatbot_Architecture
+
+!theme plain
+skinparam packageStyle rectangle
+skinparam component {
+    BackgroundColor LightBlue
+    BorderColor DarkBlue
+    FontColor Black
+}
+
+title Medical Chatbot - System Architecture Diagram
+
+package "Client Layer" {
+    [Web Browser] as browser
+    [HTML/CSS] as frontend
+    [JavaScript/jQuery] as js
+    
+    browser -down-> frontend
+    browser -down-> js
+}
+
+package "Application Layer" {
+    [Flask Web Server] as flask
+    [Route Handlers] as routes
+    [Error Handling] as errors
+    
+    flask -down-> routes
+    flask -down-> errors
+}
+
+package "Business Logic Layer" {
+    [RAG Chain] as rag
+    [Prompt Templates] as prompts
+    [Helper Functions] as helpers
+    
+    rag -right-> prompts
+    rag -down-> helpers
+}
+
+package "AI Services Layer" {
+    [Google Gemini AI] as gemini
+    [LangChain Framework] as langchain
+    
+    gemini -down-> langchain
+}
+
+package "Vector Database Layer" {
+    [Pinecone Cloud] as pinecone
+    [Vector Index] as index
+    [Similarity Search] as search
+    
+    pinecone -down-> index
+    pinecone -down-> search
+}
+
+package "Embedding Layer" {
+    [HuggingFace Transformers] as hf
+    [Sentence Embeddings] as embeddings
+    
+    hf -down-> embeddings
+}
+
+package "Data Processing Layer" {
+    [PDF Loader] as pdf
+    [Text Splitter] as splitter
+    [Document Store] as docs
+    
+    pdf -right-> splitter
+    splitter -right-> docs
+}
+
+package "Data Source Layer" {
+    [Medical PDFs] as source
+    [Knowledge Base] as kb
+    
+    source -down-> kb
+}
+
+' Connections between layers
+js -down-> flask : "HTTP/AJAX"
+flask -down-> rag : "Process Query"
+rag -down-> gemini : "Generate Response"
+rag -right-> pinecone : "Vector Search"
+helpers -down-> hf : "Create Embeddings"
+hf -down-> pinecone : "Store Vectors"
+pdf -down-> source : "Load Documents"
+
+' Data flow annotations
+note right of browser : "User Interface\n- Chat Interface\n- Real-time Updates\n- Responsive Design"
+note right of flask : "Web Framework\n- RESTful API\n- Session Management\n- Request Routing"
+note right of rag : "RAG Pipeline\n- Retrieval\n- Augmentation\n- Generation"
+note right of gemini : "Language Model\n- Text Generation\n- Context Understanding\n- Medical Knowledge"
+note right of pinecone : "Vector Database\n- Similarity Search\n- Scalable Storage\n- Sub-ms Queries"
+note right of hf : "Embedding Model\n- all-MiniLM-L6-v2\n- 384 Dimensions\n- Semantic Similarity"
+
+@enduml

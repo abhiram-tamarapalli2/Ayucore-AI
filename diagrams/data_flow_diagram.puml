@@ -1,0 +1,51 @@
+@startuml Medical_Chatbot_Data_Flow
+
+!theme plain
+skinparam activity {
+    BackgroundColor lightblue
+    BorderColor darkblue
+    ArrowColor blue
+}
+
+title Medical Chatbot - Data Flow Diagram
+
+|#lightgreen|Setup Phase|
+start
+:Load Medical PDFs from data/ folder;
+:Extract text using PyPDFLoader;
+:Split text into 500-char chunks with 20-char overlap;
+:Generate 384-dim embeddings using HuggingFace;
+:Store vectors in Pinecone index "medicalbot";
+:Vector database ready for queries;
+
+|#lightyellow|Query Phase|
+:User enters medical question;
+:JavaScript sends AJAX POST to Flask;
+:Flask receives query in /get endpoint;
+
+fork
+    :Generate query embedding using same HuggingFace model;
+fork again
+    :Prepare system prompt template;
+end fork
+
+:Search Pinecone for top-3 similar vectors;
+:Retrieve relevant medical document chunks;
+:Assemble context with retrieved documents;
+:Send enriched prompt to Gemini AI;
+:Generate medical response based on context;
+:Return response to user via web interface;
+stop
+
+note right
+    **Key Performance Metrics:**
+    - Chunk Size: 500 characters
+    - Overlap: 20 characters  
+    - Embedding Dimension: 384
+    - Similarity Metric: Cosine
+    - Retrieval Count: 3 documents
+    - Response Max Tokens: 500
+    - Temperature: 0.4 (balanced creativity)
+end note
+
+@enduml
