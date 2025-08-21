@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | Ayucore-AI Medical Chatbot</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <i class="fas fa-heartbeat"></i>
+          <span>Ayucore-AI</span>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/features" class="nav-link">Features</a>
+          <a href="/about" class="nav-link active">About</a>
+          <a href="/chat" class="nav-link chat-btn">Try Chatbot</a>
+        </div>
+        <div class="nav-toggle" id="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- About Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero-content">
+          <h1>About Ayucore-AI</h1>
+          <p>
+            Revolutionizing healthcare with advanced AI technology and
+            professional medical expertise
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission">
+      <div class="container">
+        <div class="mission-content">
+          <div class="mission-text">
+            <h2>Our Mission</h2>
+            <p class="mission-description">
+              To democratize healthcare by providing professional-grade medical
+              consultation through advanced artificial intelligence, making
+              quality healthcare guidance accessible to everyone, anywhere,
+              anytime.
+            </p>
+            <div class="mission-points">
+              <div class="mission-point">
+                <i class="fas fa-globe"></i>
+                <div>
+                  <h4>Global Accessibility</h4>
+                  <p>
+                    Breaking down barriers to healthcare access with 24/7 AI
+                    medical consultation
+                  </p>
+                </div>
+              </div>
+              <div class="mission-point">
+                <i class="fas fa-accuracy"></i>
+                <div>
+                  <h4>Medical Accuracy</h4>
+                  <p>
+                    Leveraging advanced AI and comprehensive medical knowledge
+                    for reliable guidance
+                  </p>
+                </div>
+              </div>
+              <div class="mission-point">
+                <i class="fas fa-user-shield"></i>
+                <div>
+                  <h4>Patient Privacy</h4>
+                  <p>
+                    Ensuring secure, confidential healthcare consultations with
+                    advanced privacy protection
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mission-visual">
+            <div class="mission-stats">
+              <div class="stat-circle">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Available</div>
+              </div>
+              <div class="stat-circle">
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Medical Topics</div>
+              </div>
+              <div class="stat-circle">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Privacy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="about-technology">
+      <div class="container">
+        <div class="section-header">
+          <h2>The Technology Behind Ayucore-AI</h2>
+          <p>
+            Advanced artificial intelligence meets comprehensive medical
+            expertise
+          </p>
+        </div>
+        <div class="tech-architecture">
+          <div class="tech-layer">
+            <div class="layer-header">
+              <i class="fas fa-user"></i>
+              <h4>User Interface Layer</h4>
+            </div>
+            <div class="layer-content">
+              <p>
+                Modern, responsive web interface designed for seamless patient
+                interaction with intuitive chat interface and patient
+                information management.
+              </p>
+              <div class="tech-tags">
+                <span>HTML5</span>
+                <span>CSS3</span>
+                <span>JavaScript</span>
+                <span>Flask Templates</span>
+              </div>
+            </div>
+          </div>
+          <div class="tech-layer">
+            <div class="layer-header">
+              <i class="fas fa-server"></i>
+              <h4>Application Layer</h4>
+            </div>
+            <div class="layer-content">
+              <p>
+                Robust Flask backend with advanced session management,
+                conversation tracking, and intelligent medical consultation
+                flow.
+              </p>
+              <div class="tech-tags">
+                <span>Python 3.12</span>
+                <span>Flask Framework</span>
+                <span>Session Management</span>
+                <span>Error Handling</span>
+              </div>
+            </div>
+          </div>
+          <div class="tech-layer">
+            <div class="layer-header">
+              <i class="fas fa-brain"></i>
+              <h4>AI Processing Layer</h4>
+            </div>
+            <div class="layer-content">
+              <p>
+                Google Gemini 1.5 Flash AI with LangChain framework for
+                sophisticated natural language processing and medical reasoning.
+              </p>
+              <div class="tech-tags">
+                <span>Google Gemini AI</span>
+                <span>LangChain</span>
+                <span>RAG Architecture</span>
+                <span>NLP Processing</span>
+              </div>
+            </div>
+          </div>
+          <div class="tech-layer">
+            <div class="layer-header">
+              <i class="fas fa-database"></i>
+              <h4>Knowledge Base Layer</h4>
+            </div>
+            <div class="layer-content">
+              <p>
+                Pinecone vector database with HuggingFace embeddings for
+                semantic search through comprehensive medical knowledge.
+              </p>
+              <div class="tech-tags">
+                <span>Pinecone Vector DB</span>
+                <span>HuggingFace Embeddings</span>
+                <span>Semantic Search</span>
+                <span>Medical Knowledge</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Overview -->
+    <section class="about-features">
+      <div class="container">
+        <div class="section-header">
+          <h2>What Makes Ayucore-AI Special</h2>
+          <p>
+            Comprehensive healthcare AI designed for real-world medical
+            consultation
+          </p>
+        </div>
+        <div class="about-features-grid">
+          <div class="about-feature">
+            <div class="feature-number">01</div>
+            <div class="feature-content">
+              <h4>Doctor-like Consultation Process</h4>
+              <p>
+                Progressive questioning system that mirrors real medical
+                consultations, gathering comprehensive symptom information
+                through targeted questions and professional assessment.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-number">02</div>
+            <div class="feature-content">
+              <h4>Educational Medical Database</h4>
+              <p>
+                Extensive medical knowledge base with "what is" question
+                detection, spelling tolerance, and comprehensive disease
+                explanations covering symptoms, treatments, and prevention.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-number">03</div>
+            <div class="feature-content">
+              <h4>Personalized Patient Care</h4>
+              <p>
+                Individual patient information integration throughout
+                consultation with secure session management and conversation
+                history for continuous, personalized care.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-number">04</div>
+            <div class="feature-content">
+              <h4>Professional Medical Responses</h4>
+              <p>
+                Detailed treatment recommendations including specific
+                medications with dosages, nutritional guidance, recovery
+                timelines, and emergency care criteria.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-number">05</div>
+            <div class="feature-content">
+              <h4>Advanced Error Handling</h4>
+              <p>
+                Robust system reliability with timeout protection, medical
+                fallback responses, and comprehensive error handling to ensure
+                uninterrupted healthcare guidance.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-number">06</div>
+            <div class="feature-content">
+              <h4>Secure and Private</h4>
+              <p>
+                Enterprise-grade security with encrypted sessions, secure API
+                key management, and HIPAA-compliant privacy protection for all
+                patient interactions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Development Journey -->
+    <section class="development-journey">
+      <div class="container">
+        <div class="section-header">
+          <h2>Development Journey</h2>
+          <p>From concept to comprehensive medical AI assistant</p>
+        </div>
+        <div class="journey-timeline">
+          <div class="timeline-item">
+            <div class="timeline-marker">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Concept & Research</h4>
+              <p>
+                Identified the need for accessible, professional medical
+                guidance through AI technology. Researched medical consultation
+                patterns and patient needs.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">
+              <i class="fas fa-code"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Core Development</h4>
+              <p>
+                Built the foundational RAG architecture with Flask backend,
+                integrated Google Gemini AI, and established Pinecone vector
+                database for medical knowledge.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>AI Enhancement</h4>
+              <p>
+                Implemented progressive questioning system, educational content
+                detection, and comprehensive medical response generation with
+                spelling tolerance.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Medical Integration</h4>
+              <p>
+                Added patient information management, session tracking, detailed
+                treatment recommendations, and professional medical response
+                formatting.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Security & Reliability</h4>
+              <p>
+                Implemented robust error handling, timeout protection, secure
+                session management, and comprehensive medical fallback systems.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Production Ready</h4>
+              <p>
+                Comprehensive testing, documentation, deployment optimization,
+                and professional web interface for complete healthcare AI
+                solution.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Medical Disclaimer -->
+    <section class="medical-disclaimer">
+      <div class="container">
+        <div class="disclaimer-content">
+          <div class="disclaimer-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="disclaimer-text">
+            <h3>Important Medical Disclaimer</h3>
+            <p>
+              Ayucore-AI is an advanced medical consultation AI designed to
+              provide general health information and guidance. This system is
+              not intended to replace professional medical advice, diagnosis, or
+              treatment. Always seek the advice of qualified healthcare
+              professionals for any medical concerns or conditions. In case of
+              medical emergencies, contact emergency services immediately.
+            </p>
+            <div class="disclaimer-points">
+              <div class="disclaimer-point">
+                <i class="fas fa-check"></i>
+                <span>General medical information and educational content</span>
+              </div>
+              <div class="disclaimer-point">
+                <i class="fas fa-check"></i>
+                <span>Symptom assessment and treatment suggestions</span>
+              </div>
+              <div class="disclaimer-point">
+                <i class="fas fa-times"></i>
+                <span>Not a replacement for professional medical care</span>
+              </div>
+              <div class="disclaimer-point">
+                <i class="fas fa-times"></i>
+                <span>Not for emergency medical situations</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="container">
+        <div class="cta-content">
+          <h2>Ready to Experience Advanced Medical AI?</h2>
+          <p>
+            Join thousands who trust Ayucore-AI for professional medical
+            guidance
+          </p>
+          <a href="/chat" class="btn-primary large">
+            <i class="fas fa-stethoscope"></i>
+            Start Your Consultation
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-brand">
+              <i class="fas fa-heartbeat"></i>
+              <span>Ayucore-AI</span>
+            </div>
+            <p>
+              Advanced medical consultation powered by AI technology.
+              Professional healthcare guidance at your fingertips.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/features">Features</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/chat">Chatbot</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Medical Topics</h4>
+            <ul>
+              <li><a href="/chat">Fever & Infections</a></li>
+              <li><a href="/chat">Headaches & Migraines</a></li>
+              <li><a href="/chat">Cold & Flu</a></li>
+              <li><a href="/chat">Diabetes Care</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Disclaimer</h4>
+            <p>
+              <small
+                >This AI assistant provides general medical information and
+                should not replace professional medical advice. Always consult
+                healthcare professionals for serious conditions.</small
+              >
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 Ayucore-AI. Advanced Medical Consultation System.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

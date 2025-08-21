@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Features | Ayucore-AI Medical Chatbot</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <i class="fas fa-heartbeat"></i>
+          <span>Ayucore-AI</span>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/features" class="nav-link active">Features</a>
+          <a href="/about" class="nav-link">About</a>
+          <a href="/chat" class="nav-link chat-btn">Try Chatbot</a>
+        </div>
+        <div class="nav-toggle" id="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Features Hero -->
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero-content">
+          <h1>Advanced Medical AI Features</h1>
+          <p>
+            Discover the comprehensive capabilities that make Ayucore-AI your
+            trusted medical companion
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Features -->
+    <section class="features-detailed">
+      <div class="container">
+        <div class="features-detailed-grid">
+          <!-- Doctor-like Consultation -->
+          <div class="feature-detailed">
+            <div class="feature-detailed-header">
+              <div class="feature-icon large">
+                <i class="fas fa-user-md"></i>
+              </div>
+              <h3>Doctor-like Consultation</h3>
+            </div>
+            <div class="feature-detailed-content">
+              <p>
+                Experience professional medical consultation with progressive
+                questioning and comprehensive symptom analysis.
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <i class="fas fa-check"></i> Progressive symptom questioning
+                  (up to 5 targeted questions)
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Severity assessment and duration
+                  analysis
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Comprehensive medical evaluation
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Personalized treatment
+                  recommendations
+                </li>
+              </ul>
+              <div class="feature-demo">
+                <div class="demo-conversation">
+                  <div class="demo-message doctor">
+                    <strong>Dr. Ayucore:</strong> I need to understand your
+                    condition better. What specific symptoms are you
+                    experiencing?
+                  </div>
+                  <div class="demo-message patient">
+                    <strong>Patient:</strong> I have fever, headache, and body
+                    ache
+                  </div>
+                  <div class="demo-message doctor">
+                    <strong>Dr. Ayucore:</strong> How long have you been
+                    experiencing these symptoms? This helps me determine if it's
+                    acute or chronic.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Educational System -->
+          <div class="feature-detailed">
+            <div class="feature-detailed-header">
+              <div class="feature-icon large">
+                <i class="fas fa-book-medical"></i>
+              </div>
+              <h3>Educational Medical Guides</h3>
+            </div>
+            <div class="feature-detailed-content">
+              <p>
+                Access comprehensive medical information with intelligent
+                spelling tolerance and detailed explanations.
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <i class="fas fa-check"></i> "What is" question detection and
+                  comprehensive responses
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Spelling tolerance (e.g.,
+                  "ferver" → "fever")
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Detailed disease mechanisms and
+                  treatments
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Prevention strategies and health
+                  maintenance
+                </li>
+              </ul>
+              <div class="feature-demo">
+                <div class="demo-topics">
+                  <div class="topic-card">
+                    <i class="fas fa-thermometer-half"></i>
+                    <span>Fever & Infections</span>
+                  </div>
+                  <div class="topic-card">
+                    <i class="fas fa-head-side-cough"></i>
+                    <span>Cold & Flu</span>
+                  </div>
+                  <div class="topic-card">
+                    <i class="fas fa-brain"></i>
+                    <span>Headaches & Migraines</span>
+                  </div>
+                  <div class="topic-card">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Diabetes Care</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Patient Management -->
+          <div class="feature-detailed">
+            <div class="feature-detailed-header">
+              <div class="feature-icon large">
+                <i class="fas fa-user-circle"></i>
+              </div>
+              <h3>Patient Information Management</h3>
+            </div>
+            <div class="feature-detailed-content">
+              <p>
+                Personalized healthcare experience with integrated patient
+                information and session management.
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <i class="fas fa-check"></i> Personal details integration
+                  (name, age, gender)
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Session-based conversation
+                  history
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Customized medical advice based
+                  on profile
+                </li>
+                <li><i class="fas fa-check"></i> Secure session management</li>
+              </ul>
+              <div class="feature-demo">
+                <div class="patient-info-demo">
+                  <div class="patient-card">
+                    <h4>Patient Information</h4>
+                    <div class="patient-details">
+                      <div class="detail">
+                        <span class="label">Name:</span>
+                        <span class="value">Sarah Johnson</span>
+                      </div>
+                      <div class="detail">
+                        <span class="label">Age:</span>
+                        <span class="value">28</span>
+                      </div>
+                      <div class="detail">
+                        <span class="label">Gender:</span>
+                        <span class="value">Female</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Professional Responses -->
+          <div class="feature-detailed">
+            <div class="feature-detailed-header">
+              <div class="feature-icon large">
+                <i class="fas fa-prescription-bottle-alt"></i>
+              </div>
+              <h3>Professional Medical Responses</h3>
+            </div>
+            <div class="feature-detailed-content">
+              <p>
+                Detailed medical guidance with specific medications, treatments,
+                and comprehensive care plans.
+              </p>
+              <ul class="feature-list">
+                <li>
+                  <i class="fas fa-check"></i> Detailed medication
+                  recommendations with dosages
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Comprehensive nutritional
+                  guidance
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Recovery timelines and monitoring
+                  instructions
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Emergency care criteria and red
+                  flag symptoms
+                </li>
+              </ul>
+              <div class="feature-demo">
+                <div class="treatment-plan">
+                  <h5>Sample Treatment Plan</h5>
+                  <div class="treatment-section">
+                    <strong>Medications:</strong>
+                    <ul>
+                      <li>Paracetamol 500mg every 6-8 hours</li>
+                      <li>Ibuprofen 400mg every 8 hours with food</li>
+                    </ul>
+                  </div>
+                  <div class="treatment-section">
+                    <strong>Nutrition:</strong>
+                    <ul>
+                      <li>Bone broth with vegetables</li>
+                      <li>Fresh ginger tea with honey</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Features -->
+    <section class="technical-features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Advanced Technical Capabilities</h2>
+          <p>
+            Built with cutting-edge AI technology for reliable medical guidance
+          </p>
+        </div>
+        <div class="tech-features-grid">
+          <div class="tech-feature-card">
+            <div class="tech-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h4>RAG Architecture</h4>
+            <p>
+              Retrieval Augmented Generation with Pinecone vector database for
+              accurate medical knowledge retrieval
+            </p>
+          </div>
+          <div class="tech-feature-card">
+            <div class="tech-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h4>Google Gemini AI</h4>
+            <p>
+              Advanced language model optimized for medical consultations with
+              comprehensive response generation
+            </p>
+          </div>
+          <div class="tech-feature-card">
+            <div class="tech-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h4>Error Handling</h4>
+            <p>
+              Robust timeout protection and medical fallback responses ensure
+              system reliability
+            </p>
+          </div>
+          <div class="tech-feature-card">
+            <div class="tech-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <h4>Session Management</h4>
+            <p>
+              Advanced conversation tracking with secure session management and
+              history preservation
+            </p>
+          </div>
+          <div class="tech-feature-card">
+            <div class="tech-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h4>Semantic Search</h4>
+            <p>
+              AI-powered semantic search through comprehensive medical knowledge
+              base with 384-dimensional embeddings
+            </p>
+          </div>
+          <div class="tech-feature-card">
+            <div class="tech-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h4>Responsive Design</h4>
+            <p>
+              Modern, mobile-first interface optimized for all devices with
+              professional medical aesthetics
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Medical Coverage -->
+    <section class="medical-coverage">
+      <div class="container">
+        <div class="section-header">
+          <h2>Comprehensive Medical Coverage</h2>
+          <p>
+            Access detailed information and guidance across multiple medical
+            specialties
+          </p>
+        </div>
+        <div class="coverage-grid">
+          <div class="coverage-category">
+            <div class="category-header">
+              <i class="fas fa-thermometer-half"></i>
+              <h4>Infectious Diseases</h4>
+            </div>
+            <ul>
+              <li>Fever and temperature management</li>
+              <li>Common cold and influenza</li>
+              <li>Respiratory tract infections</li>
+              <li>Gastrointestinal infections</li>
+            </ul>
+          </div>
+          <div class="coverage-category">
+            <div class="category-header">
+              <i class="fas fa-brain"></i>
+              <h4>Neurological</h4>
+            </div>
+            <ul>
+              <li>Headaches and migraines</li>
+              <li>Tension headaches</li>
+              <li>Cluster headaches</li>
+              <li>Stress-related symptoms</li>
+            </ul>
+          </div>
+          <div class="coverage-category">
+            <div class="category-header">
+              <i class="fas fa-heartbeat"></i>
+              <h4>Chronic Conditions</h4>
+            </div>
+            <ul>
+              <li>Diabetes management</li>
+              <li>Hypertension care</li>
+              <li>Cardiovascular health</li>
+              <li>Metabolic disorders</li>
+            </ul>
+          </div>
+          <div class="coverage-category">
+            <div class="category-header">
+              <i class="fas fa-lungs"></i>
+              <h4>Respiratory</h4>
+            </div>
+            <ul>
+              <li>Asthma management</li>
+              <li>Bronchitis care</li>
+              <li>Cough and congestion</li>
+              <li>Breathing difficulties</li>
+            </ul>
+          </div>
+          <div class="coverage-category">
+            <div class="category-header">
+              <i class="fas fa-shield-virus"></i>
+              <h4>Prevention</h4>
+            </div>
+            <ul>
+              <li>Vaccination guidance</li>
+              <li>Lifestyle recommendations</li>
+              <li>Nutrition counseling</li>
+              <li>Exercise planning</li>
+            </ul>
+          </div>
+          <div class="coverage-category">
+            <div class="category-header">
+              <i class="fas fa-exclamation-triangle"></i>
+              <h4>Emergency Care</h4>
+            </div>
+            <ul>
+              <li>Red flag symptom recognition</li>
+              <li>When to seek immediate care</li>
+              <li>Emergency protocols</li>
+              <li>Critical symptom management</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+      <div class="container">
+        <div class="cta-content">
+          <h2>Experience Advanced Medical AI</h2>
+          <p>
+            Try all these features now and get professional medical guidance
+            instantly
+          </p>
+          <a href="/chat" class="btn-primary large">
+            <i class="fas fa-stethoscope"></i>
+            Start Your Consultation
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-brand">
+              <i class="fas fa-heartbeat"></i>
+              <span>Ayucore-AI</span>
+            </div>
+            <p>
+              Advanced medical consultation powered by AI technology.
+              Professional healthcare guidance at your fingertips.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/features">Features</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/chat">Chatbot</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Medical Topics</h4>
+            <ul>
+              <li><a href="/chat">Fever & Infections</a></li>
+              <li><a href="/chat">Headaches & Migraines</a></li>
+              <li><a href="/chat">Cold & Flu</a></li>
+              <li><a href="/chat">Diabetes Care</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Disclaimer</h4>
+            <p>
+              <small
+                >This AI assistant provides general medical information and
+                should not replace professional medical advice. Always consult
+                healthcare professionals for serious conditions.</small
+              >
+            </p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 Ayucore-AI. Advanced Medical Consultation System.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

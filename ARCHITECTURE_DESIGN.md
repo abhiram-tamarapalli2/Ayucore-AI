@@ -99,11 +99,13 @@ This document provides a comprehensive analysis of the Medical Chatbot system ar
 ### 1. Frontend Layer
 
 #### **HTML/CSS/JavaScript**
+
 - **Why:** Universal browser compatibility, responsive design
 - **Internal:** DOM manipulation, event handling, AJAX communication
 - **Benefits:** Real-time chat interface, smooth user experience
 
 #### **jQuery**
+
 - **Why:** Simplified AJAX calls and DOM manipulation
 - **Internal:** Handles form submission, API calls, dynamic content updates
 - **Benefits:** Cross-browser compatibility, reduced code complexity
@@ -111,9 +113,10 @@ This document provides a comprehensive analysis of the Medical Chatbot system ar
 ### 2. Web Framework Layer
 
 #### **Flask (Python)**
+
 - **Why:** Lightweight, flexible, rapid development
 - **Internal:** WSGI application server, routing, request handling
-- **Benefits:** 
+- **Benefits:**
   - Minimal boilerplate code
   - Easy integration with ML libraries
   - Built-in development server
@@ -128,6 +131,7 @@ This document provides a comprehensive analysis of the Medical Chatbot system ar
 ### 3. AI & ML Layer
 
 #### **LangChain Framework**
+
 - **Why:** Standardized AI application development
 - **Internal:** Chain composition, prompt management, document processing
 - **Benefits:**
@@ -136,6 +140,7 @@ This document provides a comprehensive analysis of the Medical Chatbot system ar
   - Built-in integrations
 
 #### **Google Gemini AI**
+
 - **Why:** State-of-the-art language understanding and generation
 - **Internal:** Transformer-based neural network, API-based inference
 - **Benefits:**
@@ -144,6 +149,7 @@ This document provides a comprehensive analysis of the Medical Chatbot system ar
   - Google's reliable infrastructure
 
 #### **HuggingFace Transformers**
+
 - **Why:** Open-source, pre-trained embedding models
 - **Internal:** BERT-based sentence embeddings
 - **Benefits:**
@@ -154,6 +160,7 @@ This document provides a comprehensive analysis of the Medical Chatbot system ar
 ### 4. Vector Database Layer
 
 #### **Pinecone**
+
 - **Why:** Managed vector database for AI applications
 - **Internal:** Distributed vector indexing, approximate nearest neighbor search
 - **Benefits:**
@@ -192,6 +199,7 @@ User Query ──► HuggingFace ──► Pinecone ──► Top-K ──► Co
 ## 🧠 RAG (Retrieval-Augmented Generation) Pipeline
 
 ### Phase 1: Knowledge Base Creation
+
 ```
 1. Document Ingestion
    ├── PDF files loaded from data/ directory
@@ -216,6 +224,7 @@ User Query ──► HuggingFace ──► Pinecone ──► Top-K ──► Co
 ```
 
 ### Phase 2: Query Processing
+
 ```
 1. User Input
    ├── Medical question submitted via web interface
@@ -253,6 +262,7 @@ User Query ──► HuggingFace ──► Pinecone ──► Top-K ──► Co
 ## 🔐 Security Architecture
 
 ### 1. API Key Management
+
 ```
 Environment Variables (.env file)
 ├── PINECONE_API_KEY (Vector database access)
@@ -261,6 +271,7 @@ Environment Variables (.env file)
 ```
 
 ### 2. Input Validation
+
 ```
 Flask Application Layer
 ├── Form data sanitization
@@ -270,6 +281,7 @@ Flask Application Layer
 ```
 
 ### 3. Rate Limiting Considerations
+
 ```
 External API Dependencies
 ├── Pinecone: Built-in rate limiting
@@ -282,6 +294,7 @@ External API Dependencies
 ## 📊 Performance Optimization
 
 ### 1. Vector Search Optimization
+
 ```
 Pinecone Configuration
 ├── Dimension: 384 (optimal for all-MiniLM-L6-v2)
@@ -291,6 +304,7 @@ Pinecone Configuration
 ```
 
 ### 2. Model Selection Rationale
+
 ```
 HuggingFace Model: all-MiniLM-L6-v2
 ├── Size: 80MB (fast loading)
@@ -306,6 +320,7 @@ Gemini Model: gemini-1.5-flash
 ```
 
 ### 3. Caching Strategy
+
 ```
 Recommended Improvements
 ├── Redis for frequent query caching
@@ -359,6 +374,7 @@ static/style.css (Styling)
 ## 🏭 Deployment Architecture
 
 ### Development Environment
+
 ```
 Local Machine
 ├── Python virtual environment
@@ -368,6 +384,7 @@ Local Machine
 ```
 
 ### Production Considerations
+
 ```
 Cloud Deployment Options
 ├── Heroku: Easy deployment with Procfile
@@ -387,6 +404,7 @@ Required Environment Variables
 ## 📈 Scalability Considerations
 
 ### Horizontal Scaling
+
 ```
 Load Balancer
 ├── Multiple Flask application instances
@@ -396,6 +414,7 @@ Load Balancer
 ```
 
 ### Vertical Scaling
+
 ```
 Resource Optimization
 ├── Increase server CPU/RAM
@@ -405,6 +424,7 @@ Resource Optimization
 ```
 
 ### Database Scaling
+
 ```
 Pinecone Features
 ├── Automatic index scaling
@@ -418,6 +438,7 @@ Pinecone Features
 ## 🚨 Error Handling Strategy
 
 ### Application Level
+
 ```python
 try:
     # RAG chain processing
@@ -429,17 +450,19 @@ except Exception as e:
 ```
 
 ### Network Level
+
 ```javascript
 $.ajax({
-    // AJAX request configuration
-    error: function() {
-        // Client-side error handling
-        $("#chatContainer").append(error_message);
-    }
+  // AJAX request configuration
+  error: function () {
+    // Client-side error handling
+    $("#chatContainer").append(error_message);
+  },
 });
 ```
 
 ### API Level
+
 ```
 External Service Failures
 ├── Pinecone connection issues ──► Retry logic
@@ -453,6 +476,7 @@ External Service Failures
 ## 🔍 Monitoring & Observability
 
 ### Logging Strategy
+
 ```python
 import logging
 
@@ -467,6 +491,7 @@ logger.info(f"Response generated: {response_length}")
 ```
 
 ### Metrics to Monitor
+
 ```
 Performance Metrics
 ├── Query response time
@@ -492,6 +517,7 @@ Technical Metrics
 ## 🎯 Future Enhancements
 
 ### 1. Advanced Features
+
 ```
 Conversation Memory
 ├── Multi-turn conversation support
@@ -507,6 +533,7 @@ Personalization
 ```
 
 ### 2. Technical Improvements
+
 ```
 Performance Optimization
 ├── Response caching with Redis
@@ -523,6 +550,7 @@ Security Enhancements
 ```
 
 ### 3. Data Pipeline Enhancements
+
 ```
 Document Processing
 ├── Multiple file format support (DOC, TXT, HTML)
@@ -537,6 +565,7 @@ Document Processing
 ## 📋 System Requirements
 
 ### Minimum Requirements
+
 ```
 Hardware
 ├── CPU: 2 cores, 2.0 GHz
@@ -552,6 +581,7 @@ Software
 ```
 
 ### Recommended Requirements
+
 ```
 Hardware
 ├── CPU: 4+ cores, 3.0+ GHz
@@ -571,6 +601,7 @@ Software
 ## 📚 API Documentation
 
 ### Flask Endpoints
+
 ```
 GET /
 ├── Purpose: Serve chat interface
@@ -585,6 +616,7 @@ POST /get
 ```
 
 ### External API Integration
+
 ```
 Pinecone API
 ├── Endpoint: vector similarity search

@@ -3,109 +3,584 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Medical Chatbot</title>
+    <title>Ayucore AI - Medical Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"
+    />
   </head>
   <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <span class="logo">❤️</span>
+          <span class="brand-text">AyuCore-AI</span>
+        </div>
+        <div class="nav-menu">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/features" class="nav-link">Features</a>
+          <a href="/about" class="nav-link">About</a>
+          <a href="/chat" class="nav-link-button">Try Chatbot</a>
+        </div>
+      </div>
+    </nav>
+
     <div class="container">
       <div class="chat-container">
-        <div class="chat-header">
-          <h1>🏥 Medical Chatbot</h1>
-          <p>Ask me about medical conditions, symptoms, and treatments</p>
-        </div>
-
-        <div class="chat-messages" id="chatMessages">
-          <div class="message bot-message">
-            <div class="message-content">
-              Hello! I'm your medical assistant powered by Gemini AI. You can
-              ask me about various medical conditions, symptoms, treatments, and
-              medications. How can I help you today?
+        <!-- Patient Information Side Panel -->
+        <div class="patient-info-panel" id="patientPanel">
+          <div class="patient-info-header" onclick="togglePatientPanel()">
+            <h3>👤 Patient Information</h3>
+          </div>
+          <div class="patient-info-form">
+            <div class="info-field">
+              <label for="patientName">Full Name:</label>
+              <input
+                type="text"
+                id="patientName"
+                placeholder="Enter your name"
+              />
+            </div>
+            <div class="info-field">
+              <label for="patientAge">Age:</label>
+              <input
+                type="number"
+                id="patientAge"
+                placeholder="Age"
+                min="1"
+                max="120"
+              />
+            </div>
+            <div class="info-field">
+              <label for="patientGender">Gender:</label>
+              <select id="patientGender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="info-field">
+              <label for="patientWeight">Weight (kg):</label>
+              <input
+                type="number"
+                id="patientWeight"
+                placeholder="Weight"
+                min="1"
+                max="300"
+              />
+            </div>
+            <div class="info-field">
+              <label for="patientHeight">Height (cm):</label>
+              <input
+                type="number"
+                id="patientHeight"
+                placeholder="Height"
+                min="50"
+                max="250"
+              />
+            </div>
+            <button id="savePatientInfo" class="save-info-btn">
+              💾 Save Info
+            </button>
+            <div
+              class="patient-summary"
+              id="patientSummary"
+              style="display: none"
+            >
+              <h4>📋 Current Patient:</h4>
+              <div id="summaryContent"></div>
+              <button
+                onclick="hidePatientInfo()"
+                style="
+                  margin-top: 10px;
+                  font-size: 11px;
+                  padding: 5px 10px;
+                  background: #e74c3c;
+                  color: white;
+                  border: none;
+                  border-radius: 4px;
+                  cursor: pointer;
+                "
+              >
+                🗂️ Hide Panel
+              </button>
             </div>
           </div>
         </div>
 
-        <div class="chat-input">
-          <form id="messageForm">
-            <input
-              type="text"
-              id="messageInput"
-              placeholder="Type your medical question here..."
-              autocomplete="off"
-            />
-            <button type="submit">Send</button>
-          </form>
+        <!-- Main Chat Area -->
+        <div class="main-chat-area">
+          <div class="chat-header">
+            <h1>🩺 Dr. Ayucore - Medical Consultation</h1>
+            <p>
+              Professional medical consultation with systematic diagnostic
+              approach
+            </p>
+            <button id="newConsultationBtn" class="new-consultation-btn">
+              🔄 New Consultation
+            </button>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+              <div class="message-content">
+                👨‍⚕️ <strong>Welcome to Dr. Ayucore's Medical Consultation</strong
+                ><br /><br />
+
+                Hello! I'm Dr. Ayucore, your virtual medical doctor. Please
+                start by filling out your basic information in the patient panel
+                on the left, then we can begin your consultation.<br /><br />
+
+                <strong>📋 Smart Consultation Process:</strong><br />
+                1️⃣ Fill in your patient information and click "💾 Save Info"<br />
+                2️⃣ Say "Hi" or describe your symptoms to start<br />
+                3️⃣ I'll ask only the essential questions needed (max 5)<br />
+                4️⃣ Say "thank you" when ready for your complete diagnosis<br /><br />
+
+                <strong
+                  >Once you've saved your information, just say "Hi" to
+                  begin!</strong
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-input">
+            <form id="messageForm">
+              <textarea
+                id="messageInput"
+                placeholder="Describe your symptoms or medical concern..."
+                autocomplete="off"
+                rows="1"
+              ></textarea>
+              <button type="submit" id="sendButton">
+                <span id="buttonText">Send</span>
+                <span id="buttonLoader" style="display: none">●●●</span>
+              </button>
+            </form>
+          </div>
         </div>
+        <!-- End of main-chat-area -->
       </div>
     </div>
 
     <script>
       $(document).ready(function () {
+        // Auto-focus on input
+        $("#messageInput").focus();
+
+        // Auto-resize textarea
+        $("#messageInput").on("input", function () {
+          this.style.height = "auto";
+          this.style.height = Math.min(this.scrollHeight, 120) + "px";
+        });
+
+        // Handle Enter key for sending messages
+        $("#messageInput").on("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            $("#messageForm").submit();
+          }
+        });
+
+        // Patient Information functionality
+        $("#savePatientInfo").click(function () {
+          const name = $("#patientName").val().trim();
+          const age = $("#patientAge").val();
+          const gender = $("#patientGender").val();
+          const weight = $("#patientWeight").val();
+          const height = $("#patientHeight").val();
+
+          if (!name || !age || !gender) {
+            alert(
+              "Please fill in at least Name, Age, and Gender before saving."
+            );
+            return;
+          }
+
+          // Save to localStorage
+          const patientInfo = {
+            name: name,
+            age: age,
+            gender: gender,
+            weight: weight,
+            height: height,
+          };
+          localStorage.setItem("patientInfo", JSON.stringify(patientInfo));
+
+          // Update summary display
+          updatePatientSummary(patientInfo);
+
+          // Show success message
+          alert("Patient information saved successfully!");
+        });
+
+        // Load saved patient info on page load
+        function loadPatientInfo() {
+          const saved = localStorage.getItem("patientInfo");
+          if (saved) {
+            const patientInfo = JSON.parse(saved);
+            $("#patientName").val(patientInfo.name || "");
+            $("#patientAge").val(patientInfo.age || "");
+            $("#patientGender").val(patientInfo.gender || "");
+            $("#patientWeight").val(patientInfo.weight || "");
+            $("#patientHeight").val(patientInfo.height || "");
+            updatePatientSummary(patientInfo);
+          }
+        }
+
+        function updatePatientSummary(info) {
+          let bmi = "";
+          if (info.weight && info.height) {
+            const heightM = info.height / 100;
+            const bmiValue = (info.weight / (heightM * heightM)).toFixed(1);
+            bmi = `<div><strong>BMI:</strong> ${bmiValue}</div>`;
+          }
+
+          $("#summaryContent").html(`
+            <div><strong>Name:</strong> ${info.name}</div>
+            <div><strong>Age:</strong> ${info.age} years</div>
+            <div><strong>Gender:</strong> ${info.gender}</div>
+            ${
+              info.weight
+                ? `<div><strong>Weight:</strong> ${info.weight} kg</div>`
+                : ""
+            }
+            ${
+              info.height
+                ? `<div><strong>Height:</strong> ${info.height} cm</div>`
+                : ""
+            }
+            ${bmi}
+          `);
+          $("#patientSummary").show();
+        }
+
+        // Load patient info on page load
+        loadPatientInfo();
+
+        function getPatientInfoString() {
+          const saved = localStorage.getItem("patientInfo");
+          if (saved) {
+            const info = JSON.parse(saved);
+            let infoStr = `Patient Details:\n`;
+            if (info.name) infoStr += `Name: ${info.name}\n`;
+            if (info.age) infoStr += `Age: ${info.age} years\n`;
+            if (info.gender) infoStr += `Gender: ${info.gender}\n`;
+            if (info.weight) infoStr += `Weight: ${info.weight} kg\n`;
+            if (info.height) infoStr += `Height: ${info.height} cm\n`;
+            if (info.weight && info.height) {
+              const heightM = info.height / 100;
+              const bmi = (info.weight / (heightM * heightM)).toFixed(1);
+              infoStr += `BMI: ${bmi}\n`;
+            }
+            return infoStr;
+          }
+          return "";
+        }
+
+        // Check if this is a greeting or first message
+        function shouldSendPatientInfo(message) {
+          const greetings = [
+            "hi",
+            "hello",
+            "hey",
+            "good morning",
+            "good afternoon",
+          ];
+          const isGreeting = greetings.some((greeting) =>
+            message.toLowerCase().trim().includes(greeting)
+          );
+
+          // Send patient info only for greetings or if it's the first message in session
+          return isGreeting || $("#chatMessages .message").length <= 1;
+        }
+
+        // New Consultation button handler
+        $("#newConsultationBtn").click(function () {
+          if (
+            confirm(
+              "Are you sure you want to start a new consultation? This will clear the current conversation."
+            )
+          ) {
+            $.ajax({
+              url: "/reset_conversation",
+              type: "POST",
+              success: function (response) {
+                // Clear chat messages
+                $("#chatMessages").html(`
+                  <div class="message bot-message">
+                    <div class="message-content">
+                      👨‍⚕️ <strong>Welcome to Dr. Ayucore's Medical Consultation</strong><br><br>
+                      
+                      Hello! I'm Dr. Ayucore, your virtual medical doctor. Please start by filling out your basic information in the patient panel on the left, then we can begin your consultation.<br><br>
+                      
+                      <strong>📋 Smart Consultation Process:</strong><br>
+                      1️⃣ Fill in your patient information and click "💾 Save Info"<br>
+                      2️⃣ Say "Hi" or describe your symptoms to start<br>
+                      3️⃣ I'll ask only the essential questions needed (max 5)<br>
+                      4️⃣ Say "thank you" when ready for your complete diagnosis<br><br>
+                      
+                      <strong>Once you've saved your information, just say "Hi" to begin!</strong>
+                    </div>
+                  </div>`);
+                $("#messageInput").focus();
+              },
+              error: function () {
+                alert("Failed to reset conversation. Please refresh the page.");
+              },
+            });
+          }
+        });
+
+        // Handle Enter key
+        $("#messageInput").keypress(function (e) {
+          if (e.which == 13 && !e.shiftKey) {
+            e.preventDefault();
+            $("#messageForm").submit();
+          }
+        });
+
         $("#messageForm").submit(function (e) {
           e.preventDefault();
 
           var userMessage = $("#messageInput").val().trim();
           if (userMessage === "") return;
 
-          // Add user message to chat
+          // Disable form during request
+          $("#sendButton").prop("disabled", true);
+          $("#buttonText").hide();
+          $("#buttonLoader").show();
+
+          // Add user message to chat with animation
           $("#chatMessages").append(`
-                    <div class="message user-message">
-                        <div class="message-content">${userMessage}</div>
-                    </div>
-                `);
+            <div class="message user-message">
+              <div class="message-content">${escapeHtml(userMessage)}</div>
+            </div>
+          `);
 
           // Clear input
           $("#messageInput").val("");
 
-          // Add typing indicator
+          // Add enhanced typing indicator
           $("#chatMessages").append(`
-                    <div class="message bot-message" id="typingIndicator">
-                        <div class="message-content">
-                            <div class="typing-dots">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                `);
+            <div class="message bot-message" id="typingIndicator">
+              <div class="message-content">
+                <div class="typing-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          `);
 
-          // Scroll to bottom
-          $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+          // Smooth scroll to bottom
+          scrollToBottom();
 
           // Send message to backend
           $.ajax({
             url: "/get",
             type: "POST",
-            data: { msg: userMessage },
+            data: {
+              msg: userMessage,
+              patient_info: shouldSendPatientInfo(userMessage)
+                ? getPatientInfoString()
+                : "",
+            },
+            timeout: 30000, // 30 second timeout
             success: function (response) {
               // Remove typing indicator
               $("#typingIndicator").remove();
 
-              // Add bot response
+              // Add bot response with enhanced formatting
               $("#chatMessages").append(`
-                            <div class="message bot-message">
-                                <div class="message-content">${response}</div>
-                            </div>
-                        `);
+                <div class="message bot-message">
+                  <div class="message-content">${formatResponse(response)}</div>
+                </div>
+              `);
 
-              // Scroll to bottom
-              $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+              scrollToBottom();
             },
-            error: function () {
+            error: function (xhr, status, error) {
               $("#typingIndicator").remove();
+              let errorMessage =
+                "I apologize, but I'm experiencing technical difficulties. Please try again in a moment.";
+
+              if (status === "timeout") {
+                errorMessage =
+                  "The request is taking longer than usual. Please try again with a shorter question.";
+              }
+
               $("#chatMessages").append(`
-                            <div class="message bot-message">
-                                <div class="message-content">Sorry, I encountered an error. Please try again.</div>
-                            </div>
-                        `);
+                <div class="message bot-message">
+                  <div class="message-content">⚠️ ${errorMessage}</div>
+                </div>
+              `);
+              scrollToBottom();
+            },
+            complete: function () {
+              // Re-enable form
+              $("#sendButton").prop("disabled", false);
+              $("#buttonText").show();
+              $("#buttonLoader").hide();
+              $("#messageInput").focus();
             },
           });
         });
+
+        function scrollToBottom() {
+          setTimeout(function () {
+            $("#chatMessages").animate(
+              {
+                scrollTop: $("#chatMessages")[0].scrollHeight,
+              },
+              300
+            );
+          }, 100);
+        }
+
+        function escapeHtml(text) {
+          var map = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;",
+          };
+          return text.replace(/[&<>"']/g, function (m) {
+            return map[m];
+          });
+        }
+
+        function formatResponse(text) {
+          // Enhanced text formatting for better readability
+          let formatted = escapeHtml(text);
+
+          // Convert line breaks to HTML
+          formatted = formatted.replace(/\n/g, "<br>");
+
+          // Make numbered lists more visible
+          formatted = formatted.replace(/(\d+\.\s)/g, "<strong>$1</strong>");
+
+          // Highlight important medical terms (basic implementation)
+          const medicalTerms = [
+            "symptoms",
+            "treatment",
+            "diagnosis",
+            "medication",
+            "condition",
+            "disease",
+            "infection",
+            "therapy",
+            "prevention",
+          ];
+          medicalTerms.forEach((term) => {
+            const regex = new RegExp(`\\b(${term})\\b`, "gi");
+            formatted = formatted.replace(regex, "<strong>$1</strong>");
+          });
+
+          return formatted;
+        }
+
+        // Add some interactive feedback
+        $("#messageInput").on("input", function () {
+          const value = $(this).val();
+          if (value.length > 0) {
+            $(this).addClass("has-content");
+          } else {
+            $(this).removeClass("has-content");
+          }
+        });
       });
+
+      // Global functions
+      function togglePatientPanel() {
+        $("#patientPanel").toggleClass("collapsed");
+      }
+
+      function hidePatientInfo() {
+        $("#patientSummary").hide();
+      }
     </script>
+
+    <style>
+      /* Additional inline styles for enhanced interactivity */
+      .new-consultation-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .new-consultation-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .chat-header {
+        position: relative;
+      }
+
+      #messageInput.has-content {
+        border-color: #667eea !important;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15) !important;
+      }
+
+      #sendButton:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none !important;
+      }
+
+      #buttonLoader {
+        animation: pulse 1s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Enhance message content formatting */
+      .message-content strong {
+        color: #667eea;
+        font-weight: 600;
+      }
+
+      .bot-message .message-content {
+        font-family: "Inter", sans-serif;
+        line-height: 1.7;
+      }
+    </style>
   </body>
 </html>

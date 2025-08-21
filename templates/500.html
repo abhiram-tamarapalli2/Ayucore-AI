@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Server Error - AyuCore-AI</title>
+    <meta
+      name="description"
+      content="We're experiencing technical difficulties. Please try again later."
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="nav-brand">
+          <i class="fas fa-heartbeat"></i>
+          AyuCore-AI
+        </a>
+        <div class="nav-menu">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/features" class="nav-link">Features</a>
+          <a href="/about" class="nav-link">About</a>
+          <a href="/chat" class="nav-link chat-btn">
+            <i class="fas fa-comments"></i>
+            Consultation
+          </a>
+        </div>
+        <div class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 500 Error Section -->
+    <div class="error-page">
+      <div class="container">
+        <div class="error-content">
+          <div class="error-visual">
+            <div class="error-number">500</div>
+            <div class="error-icon">
+              <i class="fas fa-wrench"></i>
+            </div>
+          </div>
+          <div class="error-text">
+            <h1>Server Under Maintenance</h1>
+            <p>
+              Our medical AI is currently receiving some updates to better serve
+              you. We apologize for the inconvenience and will be back shortly!
+            </p>
+
+            <div class="error-status">
+              <div class="status-item">
+                <i class="fas fa-heartbeat status-pulse"></i>
+                <span>System Status: Updating</span>
+              </div>
+              <div class="status-item">
+                <i class="fas fa-clock"></i>
+                <span>Estimated Time: 5-10 minutes</span>
+              </div>
+            </div>
+
+            <div class="error-actions">
+              <button onclick="window.location.reload()" class="btn-primary">
+                <i class="fas fa-refresh"></i>
+                Try Again
+              </button>
+              <a href="/" class="btn-secondary">
+                <i class="fas fa-home"></i>
+                Go Home
+              </a>
+            </div>
+
+            <div class="emergency-notice">
+              <div class="notice-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Medical Emergency?</strong>
+              </div>
+              <p>
+                If this is a medical emergency, please contact your local
+                emergency services immediately:
+              </p>
+              <div class="emergency-contacts">
+                <div class="emergency-contact">
+                  <i class="fas fa-phone"></i>
+                  <span>Emergency: 911 (US) / 112 (EU)</span>
+                </div>
+                <div class="emergency-contact">
+                  <i class="fas fa-hospital"></i>
+                  <span>Poison Control: 1-800-222-1222</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-brand">
+              <i class="fas fa-heartbeat"></i>
+              AyuCore-AI
+            </div>
+            <p>
+              Advanced AI-powered medical consultation platform providing 24/7
+              healthcare guidance and support.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/features">Features</a></li>
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/chat">Consultation</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#help">Help Center</a></li>
+              <li><a href="#contact">Contact Support</a></li>
+              <li><a href="#feedback">Feedback</a></li>
+              <li><a href="#accessibility">Accessibility</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 AyuCore-AI. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <style>
+      .error-page {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+        margin-top: 80px;
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      }
+
+      .error-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1000px;
+        width: 100%;
+      }
+
+      .error-visual {
+        text-align: center;
+        position: relative;
+      }
+
+      .error-number {
+        font-size: 8rem;
+        font-weight: 800;
+        color: #dc2626;
+        line-height: 1;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
+      }
+
+      .error-icon {
+        color: #f59e0b;
+        font-size: 3rem;
+        margin-top: 1rem;
+        animation: bounce 2s infinite;
+      }
+
+      .error-text h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #dc2626;
+        margin-bottom: 1rem;
+      }
+
+      .error-text p {
+        font-size: 1.1rem;
+        color: #6b7280;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+      }
+
+      .error-status {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 1px solid #fecaca;
+        margin-bottom: 2rem;
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        color: #374151;
+      }
+
+      .status-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .status-pulse {
+        color: #dc2626;
+        animation: pulse 1.5s infinite;
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 3rem;
+      }
+
+      .emergency-notice {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 10px;
+        padding: 2rem;
+        border-left: 4px solid #dc2626;
+      }
+
+      .notice-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #dc2626;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+      }
+
+      .emergency-contacts {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .emergency-contact {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #374151;
+        font-weight: 500;
+      }
+
+      .emergency-contact i {
+        color: #dc2626;
+        width: 20px;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .error-content {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          text-align: center;
+        }
+
+        .error-number {
+          font-size: 6rem;
+        }
+
+        .error-text h1 {
+          font-size: 2rem;
+        }
+
+        .error-actions {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .emergency-contacts {
+          text-align: left;
+        }
+      }
+    </style>
+
+    <script>
+      // Auto-refresh every 30 seconds
+      setTimeout(() => {
+        window.location.reload();
+      }, 30000);
+
+      // Update countdown
+      let countdown = 30;
+      const updateCountdown = () => {
+        const countdownElement = document.querySelector(".countdown");
+        if (countdownElement) {
+          countdownElement.textContent = countdown;
+          countdown--;
+          if (countdown >= 0) {
+            setTimeout(updateCountdown, 1000);
+          }
+        }
+      };
+
+      // Add countdown display
+      window.addEventListener("DOMContentLoaded", () => {
+        const statusItem = document.querySelector(
+          ".status-item:last-child span"
+        );
+        if (statusItem) {
+          statusItem.innerHTML =
+            'Auto-refresh in: <span class="countdown">30</span> seconds';
+          updateCountdown();
+        }
+      });
+    </script>
+  </body>
+</html>

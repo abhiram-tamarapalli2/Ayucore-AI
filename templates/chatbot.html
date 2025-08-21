@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Consultation - AyuCore-AI</title>
+    <meta
+      name="description"
+      content="Get instant medical consultation with AyuCore-AI's advanced AI chatbot. Professional medical guidance available 24/7."
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="nav-brand">
+          <i class="fas fa-heartbeat"></i>
+          AyuCore-AI
+        </a>
+        <div class="nav-menu">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/features" class="nav-link">Features</a>
+          <a href="/about" class="nav-link">About</a>
+          <a href="/chat" class="nav-link chat-btn active">
+            <i class="fas fa-comments"></i>
+            Consultation
+          </a>
+        </div>
+        <div class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Chatbot Interface -->
+    <div class="chatbot-container">
+      <div class="chat-interface">
+        <!-- Patient Information Panel -->
+        <div class="patient-panel">
+          <div class="panel-header">
+            <i class="fas fa-user-md"></i>
+            <h3>Patient Information</h3>
+          </div>
+          <form id="patientForm" class="patient-form">
+            <div class="form-group">
+              <label for="patientName">Full Name</label>
+              <input
+                type="text"
+                id="patientName"
+                name="name"
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="patientAge">Age</label>
+              <input
+                type="number"
+                id="patientAge"
+                name="age"
+                placeholder="Your age"
+                min="1"
+                max="120"
+              />
+            </div>
+            <div class="form-group">
+              <label for="patientGender">Gender</label>
+              <select id="patientGender" name="gender">
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="patientWeight">Weight (kg)</label>
+              <input
+                type="number"
+                id="patientWeight"
+                name="weight"
+                placeholder="Weight in kg"
+                step="0.1"
+                min="1"
+              />
+            </div>
+            <div class="form-group">
+              <label for="patientHeight">Height (cm)</label>
+              <input
+                type="number"
+                id="patientHeight"
+                name="height"
+                placeholder="Height in cm"
+                min="50"
+                max="250"
+              />
+            </div>
+            <div class="form-group">
+              <label for="medicalHistory">Medical History</label>
+              <input
+                type="text"
+                id="medicalHistory"
+                name="medical_history"
+                placeholder="Any chronic conditions or allergies"
+              />
+            </div>
+            <div class="form-group">
+              <label for="currentMedications">Current Medications</label>
+              <input
+                type="text"
+                id="currentMedications"
+                name="medications"
+                placeholder="List current medications"
+              />
+            </div>
+            <button type="button" id="savePatientInfoBtn" class="save-btn">
+              <i class="fas fa-save"></i>
+              Save Patient Information
+            </button>
+            <button type="button" id="resetButton" class="reset-btn">
+              <i class="fas fa-refresh"></i>
+              Reset Chat
+            </button>
+          </form>
+        </div>
+
+        <!-- Chat Main Area -->
+        <div class="chat-main">
+          <div class="chat-header">
+            <i class="fas fa-stethoscope"></i>
+            <h2>Medical Consultation</h2>
+            <div
+              style="
+                margin-left: auto;
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.9rem;
+              "
+            >
+              <i class="fas fa-shield-alt"></i>
+              Secure & Confidential
+            </div>
+          </div>
+
+          <div id="chatMessages" class="chat-messages">
+            <!-- Messages will be dynamically added here -->
+          </div>
+
+          <div class="chat-input-container">
+            <textarea
+              id="messageInput"
+              class="chat-input"
+              placeholder="Describe your symptoms or ask a medical question..."
+              rows="1"
+            ></textarea>
+            <button id="sendButton" class="send-btn" type="button">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Disclaimer Modal -->
+    <div id="disclaimerModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>
+            <i class="fas fa-exclamation-triangle"></i> Important Medical
+            Disclaimer
+          </h3>
+          <button class="modal-close" onclick="closeModal()" aria-label="Close">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <strong>Important:</strong> This AI assistant provides general
+            medical information and should not replace professional medical
+            advice, diagnosis, or treatment.
+          </p>
+
+          <ul>
+            <li>
+              Always consult qualified healthcare professionals for medical
+              concerns
+            </li>
+            <li>
+              In case of emergency, call your local emergency number immediately
+              (911, 112, etc.)
+            </li>
+            <li>
+              This tool is for informational purposes only and not a substitute
+              for professional medical care
+            </li>
+            <li>Individual medical situations may vary significantly</li>
+            <li>
+              The AI responses are based on general medical knowledge and may
+              not apply to your specific condition
+            </li>
+            <li>
+              Always verify any medical information with your healthcare
+              provider
+            </li>
+          </ul>
+
+          <div
+            style="
+              background: #fef2f2;
+              border: 1px solid #fecaca;
+              border-radius: 10px;
+              padding: 1rem;
+              margin: 1rem 0;
+            "
+          >
+            <p style="color: #dc2626; font-weight: 600; margin: 0">
+              <i class="fas fa-exclamation-circle"></i>
+              If you are experiencing a medical emergency, please contact
+              emergency services immediately!
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-primary" onclick="closeModal()">
+            <i class="fas fa-check"></i>
+            I Understand and Agree
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-brand">
+              <i class="fas fa-heartbeat"></i>
+              AyuCore-AI
+            </div>
+            <p>
+              Advanced AI-powered medical consultation platform providing 24/7
+              healthcare guidance and support.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/features">Features</a></li>
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/chat">Consultation</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Medical Resources</h4>
+            <ul>
+              <li><a href="#emergency">Emergency Contacts</a></li>
+              <li><a href="#disclaimer">Medical Disclaimer</a></li>
+              <li><a href="#privacy">Privacy Policy</a></li>
+              <li><a href="#terms">Terms of Service</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#help">Help Center</a></li>
+              <li><a href="#contact">Contact Support</a></li>
+              <li><a href="#feedback">Feedback</a></li>
+              <li><a href="#accessibility">Accessibility</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            &copy; 2024 AyuCore-AI. All rights reserved. | Medical AI Assistant
+            for Educational and Informational Purposes
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Chat-specific JavaScript -->
+    <script>
+      // Additional chat-specific functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        // Show disclaimer on first visit
+        if (!localStorage.getItem("disclaimerAccepted")) {
+          setTimeout(() => {
+            showDisclaimer();
+          }, 1000); // Show after 1 second delay
+        }
+
+        // Auto-save patient information
+        const patientForm = document.getElementById("patientForm");
+        if (patientForm) {
+          patientForm.addEventListener("input", function () {
+            savePatientInfo();
+          });
+
+          // Load saved patient information
+          loadPatientInfo();
+        }
+
+        // Close modal when clicking outside
+        const modal = document.getElementById("disclaimerModal");
+        if (modal) {
+          modal.addEventListener("click", function (e) {
+            if (e.target === modal) {
+              closeModal();
+            }
+          });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            closeModal();
+          }
+        });
+      });
+
+      function showDisclaimer() {
+        const modal = document.getElementById("disclaimerModal");
+        if (modal) {
+          modal.style.display = "flex";
+          document.body.style.overflow = "hidden"; // Prevent background scrolling
+        }
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("disclaimerModal");
+        if (modal) {
+          modal.style.display = "none";
+          document.body.style.overflow = "auto"; // Restore scrolling
+          localStorage.setItem("disclaimerAccepted", "true");
+        }
+      }
+
+      function savePatientInfo() {
+        const formData = new FormData(document.getElementById("patientForm"));
+        const patientInfo = {};
+        for (let [key, value] of formData.entries()) {
+          if (value.trim()) {
+            patientInfo[key] = value.trim();
+          }
+        }
+        localStorage.setItem("patientInfo", JSON.stringify(patientInfo));
+      }
+
+      function loadPatientInfo() {
+        const savedInfo = localStorage.getItem("patientInfo");
+        if (savedInfo) {
+          const patientInfo = JSON.parse(savedInfo);
+          Object.keys(patientInfo).forEach((key) => {
+            const input = document.querySelector(`[name="${key}"]`);
+            if (input) {
+              input.value = patientInfo[key];
+            }
+          });
+        }
+      }
+
+      // Emergency contacts quick access
+      function showEmergencyContacts() {
+        alert(
+          "Emergency Numbers:\n\n• Emergency: 911 (US) / 112 (EU)\n• Poison Control: 1-800-222-1222\n• Crisis Text Line: Text HOME to 741741\n\nPlease call emergency services immediately if you are experiencing a medical emergency!"
+        );
+      }
+
+      // Function to reset disclaimer (for testing)
+      function resetDisclaimer() {
+        localStorage.removeItem("disclaimerAccepted");
+        showDisclaimer();
+      }
+
+      // Add disclaimer reset button (for development/testing)
+      if (
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1"
+      ) {
+        document.addEventListener("DOMContentLoaded", function () {
+          const resetBtn = document.getElementById("resetButton");
+          if (resetBtn) {
+            resetBtn.addEventListener("dblclick", resetDisclaimer);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

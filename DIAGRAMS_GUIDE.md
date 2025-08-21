@@ -9,26 +9,31 @@ This document contains professional StarUML-style diagrams that illustrate the c
 ## 📊 Available Diagrams
 
 ### 1. System Architecture Diagram (`system_architecture.puml`)
+
 - **Purpose:** High-level overview of all system layers
 - **Shows:** Component relationships, technology stack, data flow
 - **Use Case:** Understanding overall system design
 
 ### 2. Sequence Diagram (`sequence_diagram.puml`)
+
 - **Purpose:** Step-by-step query processing flow
 - **Shows:** Time-ordered interactions between components
 - **Use Case:** Understanding request lifecycle and performance
 
 ### 3. Component Diagram (`component_diagram.puml`)
+
 - **Purpose:** Detailed view of all system components
 - **Shows:** Dependencies, modules, external libraries
 - **Use Case:** Development and maintenance planning
 
 ### 4. Data Flow Diagram (`data_flow_diagram.puml`)
+
 - **Purpose:** Data processing and transformation flow
 - **Shows:** Setup phase and query phase workflows
 - **Use Case:** Understanding data pipeline and optimization
 
 ### 5. Deployment Diagram (`deployment_diagram.puml`)
+
 - **Purpose:** Infrastructure and deployment architecture
 - **Shows:** Servers, cloud services, client-server relationships
 - **Use Case:** Deployment planning and scaling decisions
@@ -39,14 +44,14 @@ This document contains professional StarUML-style diagrams that illustrate the c
 
 ### Technology Decision Matrix
 
-| Component | Technology | Why Chosen | Alternatives Considered | Internal Working |
-|-----------|------------|------------|------------------------|------------------|
-| **Web Framework** | Flask | Lightweight, Python-native, ML-friendly | Django (too heavy), FastAPI (async complexity) | WSGI server, routing decorators, Jinja2 templating |
-| **Vector Database** | Pinecone | Managed service, excellent performance, auto-scaling | Weaviate (self-hosted), ChromaDB (limited scale) | Distributed indexing, approximate nearest neighbor, cosine similarity |
-| **Language Model** | Google Gemini | Cost-effective, high quality, large context window | OpenAI GPT-4 (expensive), Claude (limited API) | Transformer architecture, attention mechanisms, API-based inference |
-| **Embeddings** | HuggingFace all-MiniLM-L6-v2 | Optimized for sentences, 384-dim, fast | OpenAI Ada-002 (API costs), Universal Sentence Encoder (larger) | BERT-based, mean pooling, sentence-level optimization |
-| **Frontend** | HTML/CSS/jQuery | Universal compatibility, simple deployment | React (complexity), Vue (learning curve) | DOM manipulation, AJAX requests, event handling |
-| **Document Processing** | LangChain + PyPDF | Standardized pipeline, extensive integrations | Custom parsing (maintenance burden), pdfplumber (limited features) | Recursive text splitting, metadata preservation, chunking strategies |
+| Component               | Technology                   | Why Chosen                                           | Alternatives Considered                                            | Internal Working                                                      |
+| ----------------------- | ---------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| **Web Framework**       | Flask                        | Lightweight, Python-native, ML-friendly              | Django (too heavy), FastAPI (async complexity)                     | WSGI server, routing decorators, Jinja2 templating                    |
+| **Vector Database**     | Pinecone                     | Managed service, excellent performance, auto-scaling | Weaviate (self-hosted), ChromaDB (limited scale)                   | Distributed indexing, approximate nearest neighbor, cosine similarity |
+| **Language Model**      | Google Gemini                | Cost-effective, high quality, large context window   | OpenAI GPT-4 (expensive), Claude (limited API)                     | Transformer architecture, attention mechanisms, API-based inference   |
+| **Embeddings**          | HuggingFace all-MiniLM-L6-v2 | Optimized for sentences, 384-dim, fast               | OpenAI Ada-002 (API costs), Universal Sentence Encoder (larger)    | BERT-based, mean pooling, sentence-level optimization                 |
+| **Frontend**            | HTML/CSS/jQuery              | Universal compatibility, simple deployment           | React (complexity), Vue (learning curve)                           | DOM manipulation, AJAX requests, event handling                       |
+| **Document Processing** | LangChain + PyPDF            | Standardized pipeline, extensive integrations        | Custom parsing (maintenance burden), pdfplumber (limited features) | Recursive text splitting, metadata preservation, chunking strategies  |
 
 ---
 
@@ -67,6 +72,7 @@ User Query → Query Embedding → Similarity Search → Context Retrieval → R
 ```
 
 **Why RAG Instead of Fine-tuning?**
+
 - **Cost:** No expensive model training required
 - **Flexibility:** Easy to update knowledge base
 - **Accuracy:** Grounded responses based on source documents
@@ -85,6 +91,7 @@ similarity = (A · B) / (||A|| × ||B||)
 ```
 
 **Why Cosine Similarity?**
+
 - **Magnitude Independent:** Focuses on direction, not vector length
 - **Semantic Meaning:** Similar concepts have similar directions
 - **Efficient Computation:** Optimized in Pinecone infrastructure
@@ -104,6 +111,7 @@ all-MiniLM-L6-v2 Specifications:
 ```
 
 **Why all-MiniLM-L6-v2?**
+
 - **Speed:** 10x faster than large models
 - **Quality:** State-of-the-art sentence embeddings
 - **Size:** Deployable on modest hardware
@@ -115,17 +123,17 @@ all-MiniLM-L6-v2 Specifications:
 
 ### Latency Breakdown (Typical Query)
 
-| Component | Latency | Optimization Strategy |
-|-----------|---------|----------------------|
-| Frontend (JavaScript) | ~5ms | Minified assets, CDN |
-| Network (Client→Server) | ~20ms | Geographic proximity |
-| Flask Processing | ~5ms | Efficient routing |
-| Query Embedding | ~10ms | Model caching |
-| Vector Search | ~5ms | Pinecone optimization |
-| Context Assembly | ~2ms | Efficient string operations |
-| Gemini AI Generation | ~500ms | Model selection, prompt optimization |
-| Network (Server→Client) | ~20ms | Response compression |
-| **Total End-to-End** | **~567ms** | **Target: <1 second** |
+| Component               | Latency    | Optimization Strategy                |
+| ----------------------- | ---------- | ------------------------------------ |
+| Frontend (JavaScript)   | ~5ms       | Minified assets, CDN                 |
+| Network (Client→Server) | ~20ms      | Geographic proximity                 |
+| Flask Processing        | ~5ms       | Efficient routing                    |
+| Query Embedding         | ~10ms      | Model caching                        |
+| Vector Search           | ~5ms       | Pinecone optimization                |
+| Context Assembly        | ~2ms       | Efficient string operations          |
+| Gemini AI Generation    | ~500ms     | Model selection, prompt optimization |
+| Network (Server→Client) | ~20ms      | Response compression                 |
+| **Total End-to-End**    | **~567ms** | **Target: <1 second**                |
 
 ### Scalability Metrics
 
@@ -253,6 +261,7 @@ python app.py
 ### 2. Production Deployment Options
 
 #### Option A: Heroku Deployment
+
 ```bash
 # Create Procfile
 echo "web: python app.py" > Procfile
@@ -265,6 +274,7 @@ git push heroku main
 ```
 
 #### Option B: AWS EC2 Deployment
+
 ```bash
 # EC2 instance setup
 sudo apt update
@@ -281,6 +291,7 @@ gunicorn --bind 0.0.0.0:8080 app:app
 ```
 
 #### Option C: Docker Deployment
+
 ```dockerfile
 FROM python:3.10-slim
 
@@ -323,6 +334,7 @@ def chat():
 ## 🎯 Future Enhancement Roadmap
 
 ### Phase 1: Performance Improvements
+
 ```
 Short-term (1-3 months):
 ├── Implement Redis caching for frequent queries
@@ -333,6 +345,7 @@ Short-term (1-3 months):
 ```
 
 ### Phase 2: Feature Enhancements
+
 ```
 Medium-term (3-6 months):
 ├── Multi-turn conversation support
@@ -343,6 +356,7 @@ Medium-term (3-6 months):
 ```
 
 ### Phase 3: Advanced Features
+
 ```
 Long-term (6-12 months):
 ├── Multi-language support
@@ -359,11 +373,13 @@ Long-term (6-12 months):
 ### 1. Viewing PlantUML Diagrams
 
 #### Online Viewers:
+
 - **PlantUML Online:** http://www.plantuml.com/plantuml/uml/
 - **PlantText:** https://www.planttext.com/
 - **Visual Studio Code:** PlantUML extension
 
 #### Steps to View:
+
 1. Copy the content from any `.puml` file
 2. Paste into online viewer or VS Code with PlantUML extension
 3. Generate SVG, PNG, or PDF output
@@ -371,6 +387,7 @@ Long-term (6-12 months):
 ### 2. Customizing Diagrams
 
 #### Modify Colors:
+
 ```plantuml
 skinparam component {
     BackgroundColor lightblue
@@ -379,6 +396,7 @@ skinparam component {
 ```
 
 #### Change Themes:
+
 ```plantuml
 !theme aws-orange
 !theme plain
@@ -386,6 +404,7 @@ skinparam component {
 ```
 
 #### Add Custom Notes:
+
 ```plantuml
 note right of component : "Your custom explanation"
 ```
@@ -393,11 +412,13 @@ note right of component : "Your custom explanation"
 ### 3. Integration with Documentation
 
 #### In README.md:
+
 ```markdown
 ![Architecture Diagram](diagrams/system_architecture.png)
 ```
 
 #### In Wiki/Confluence:
+
 - Export diagrams as PNG/SVG
 - Embed in documentation pages
 - Link to source `.puml` files for updates
@@ -407,6 +428,7 @@ note right of component : "Your custom explanation"
 ## 📋 Diagram Maintenance
 
 ### Version Control
+
 ```bash
 # Track diagram changes
 git add diagrams/
@@ -417,6 +439,7 @@ plantuml diagrams/*.puml
 ```
 
 ### Automated Generation
+
 ```bash
 # CI/CD pipeline step
 - name: Generate Diagrams
@@ -427,6 +450,7 @@ plantuml diagrams/*.puml
 ```
 
 ### Review Process
+
 1. **Architecture Changes:** Update corresponding diagrams
 2. **Code Reviews:** Verify diagram accuracy
 3. **Documentation:** Keep diagrams synchronized
