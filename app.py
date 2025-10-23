@@ -1,8 +1,12 @@
 from flask import Flask, render_template, request, jsonify, session, send_from_directory
 import os
+import asyncio
+import logging
 from datetime import datetime
 from src.helper import download_hugging_face_embeddings
 from src.prompt import *
+from src.ai_modes import ai_modes
+from src.voice_vision_handler import voice_vision_handler
 from langchain_pinecone import PineconeVectorStore
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import create_retrieval_chain
@@ -10,6 +14,9 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 from dotenv import load_dotenv
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -25,6 +32,9 @@ app.secret_key = os.urandom(24)  # For session management
 # Initialize components with error handling
 try:
     embeddings = download_hugging_face_embeddings()
+    
+    if embeddings is None:
+        raise Exception("Failed to load embeddings")
     
     # Pinecone initialization
     index_name = "medicalbot"
@@ -53,7 +63,7 @@ try:
     
 except Exception as e:
     print(f"[WARNING] AI initialization failed: {str(e)}")
-    print("Running in fallback mode with basic responses...")
+    print("Running in fallback mode with enhanced AI modes...")
     AI_AVAILABLE = False
     llm = None
     retrieval_chain = None
@@ -316,7 +326,7 @@ Common cold is caused by rhinoviruses, while flu is from influenza viruses. Both
 *Most cold/flu resolves naturally in 7-10 days! Your immune system has this covered. 🤧➡️😊*"""
     
     elif any(word in user_message_lower for word in ['hello', 'hi', 'hey', 'good', 'morning', 'afternoon', 'evening']):
-        return "Hello! I'm Dr. Ayucore, your AI medical assistant. How can I help you today?"
+        return "Hello! I'm Dr. Ayucore, your AI medical assistant. I'm here to help with any health concerns, questions, or medical guidance you might need. How may I assist you today?"
     
     else:
         return f"""**🩺 General Health Guidance**
@@ -370,11 +380,12 @@ def chat():
 
 @app.route("/get", methods=["GET", "POST"])
 def chat_get():
-    """Legacy endpoint for backward compatibility with form data"""
+    """Enhanced endpoint with multi-mode AI support"""
     try:
         # Handle form data from the chat interface
         user_message = request.form.get('msg', '').strip()
         patient_info_str = request.form.get('patient_info', '')
+        mode = request.form.get('mode', 'doctor')  # New: get mode parameter
         
         if not user_message:
             return "Please provide a message."
@@ -383,7 +394,6 @@ def chat_get():
         patient_info = {}
         if patient_info_str:
             try:
-                # Simple parsing of patient info string
                 lines = patient_info_str.strip().split('\n')
                 for line in lines[1:]:  # Skip first line "Patient Details:"
                     if ':' in line:
@@ -403,9 +413,10 @@ def chat_get():
             except:
                 pass
         
-        # Store patient info in session
+        # Store patient info and mode in session
         if patient_info:
             session['patient_info'] = patient_info
+        session['current_mode'] = mode
         
         # Initialize chat history if not exists
         if 'chat_history' not in session:
@@ -422,41 +433,68 @@ Patient Information:
 - Gender: {patient_data.get('gender', 'Not provided')}
 - Weight: {patient_data.get('weight', 'Not provided')} kg
 - Height: {patient_data.get('height', 'Not provided')} cm
-- Medical History: {patient_data.get('medical_history', 'None provided')}
-- Current Medications: {patient_data.get('medications', 'None provided')}
 
 """
         
         # Add chat history context
         if session['chat_history']:
-            context += "Previous conversation:\n"
-            for msg in session['chat_history'][-5:]:  # Last 5 messages for context
-                context += f"Patient: {msg['user']}\nDoctor: {msg['bot']}\n"
+            context += "\n=== ONGOING MEDICAL CONSULTATION ===\n"
+            context += "Previous conversation history (continue this consultation):\n\n"
+            for msg in session['chat_history'][-8:]:  # Last 8 messages for better context
+                context += f"Patient: {msg['user']}\nDr. Ayucore: {msg['bot']}\n\n"
+            context += "=== CONTINUE CONSULTATION ===\n"
         
-        # Combine context with current question
-        full_query = context + f"Current question: {user_message}"
-        
-        # Get AI response using retrieval chain
-        print(f"[DEBUG] AI_AVAILABLE: {AI_AVAILABLE}, retrieval_chain exists: {retrieval_chain is not None}")
-        if AI_AVAILABLE and retrieval_chain:
+        # Get response based on mode
+        try:
+            if mode == 'doctor':
+                # Doctor conversation mode
+                ai_response = asyncio.run(ai_modes.doctor_conversation_mode(
+                    message=user_message,
+                    context=context,
+                    patient_info=patient_info_str
+                ))
+            elif mode == 'knowledge':
+                # Medical knowledge mode
+                ai_response = asyncio.run(ai_modes.medical_knowledge_mode(
+                    message=user_message,
+                    context=context,
+                    patient_info=patient_info_str
+                ))
+            elif mode == 'report':
+                # Report analysis mode
+                ai_response = asyncio.run(ai_modes.report_analysis_mode(
+                    message=user_message,
+                    context=context,
+                    patient_info=patient_info_str
+                ))
+            else:
+                # Default to original retrieval chain
+                full_query = context + f"Current question: {user_message}"
+                if AI_AVAILABLE and retrieval_chain:
+                    result = retrieval_chain.invoke({"input": full_query})
+                    ai_response = result["answer"]
+                else:
+                    ai_response = get_fallback_response(user_message)
+                    
+        except Exception as mode_error:
+            print(f"[ERROR] Mode-specific error ({mode}): {str(mode_error)}")
+            # Fallback to original system
             try:
-                print(f"[DEBUG] Attempting AI call with query: {full_query[:100]}...")
-                result = retrieval_chain.invoke({"input": full_query})
-                ai_response = result["answer"]
-                print(f"[DEBUG] AI Response: {ai_response[:100]}...")
-            except Exception as llm_error:
-                print(f"[ERROR] LLM Error: {str(llm_error)}")
+                full_query = context + f"Current question: {user_message}"
+                if AI_AVAILABLE and retrieval_chain:
+                    result = retrieval_chain.invoke({"input": full_query})
+                    ai_response = result["answer"]
+                else:
+                    ai_response = get_fallback_response(user_message)
+            except Exception as fallback_error:
+                print(f"[ERROR] Fallback error: {str(fallback_error)}")
                 ai_response = get_fallback_response(user_message)
-                print(f"[DEBUG] Using Fallback after error: {ai_response[:100]}...")
-        else:
-            # Use fallback responses when AI is not available
-            ai_response = get_fallback_response(user_message)
-            print(f"[DEBUG] AI Not Available, Using Fallback: {ai_response[:100]}...")
         
         # Store in chat history
         chat_entry = {
             'user': user_message,
             'bot': ai_response,
+            'mode': mode,
             'timestamp': datetime.now().isoformat()
         }
         session['chat_history'].append(chat_entry)
@@ -471,6 +509,228 @@ Patient Information:
         error_message = str(e)
         print(f"Error in chat_get: {error_message}")
         return f"I apologize, but I encountered an error: {error_message}"
+
+@app.route("/voice-chat", methods=["POST"])
+def voice_chat():
+    """Handle voice input for medical consultation using Google Speech Recognition"""
+    try:
+        # Check if audio file is provided
+        if 'audio' in request.files:
+            audio_file = request.files['audio']
+            if audio_file.filename != '':
+                # Save uploaded audio as WAV for better recognition
+                audio_path = f"temp_audio_{datetime.now().timestamp()}.wav"
+                audio_file.save(audio_path)
+                
+                # Transcribe audio using improved method
+                transcription = voice_vision_handler.voice_to_text_with_fallback(audio_path)
+                
+                # Clean up temp file
+                if os.path.exists(audio_path):
+                    os.remove(audio_path)
+                
+                if transcription:
+                    # Process as regular chat message
+                    return process_chat_message(transcription)
+                else:
+                    return jsonify({"error": "Could not transcribe audio. Please try speaking more clearly."}), 400
+        else:
+            return jsonify({"error": "No audio file provided"}), 400
+            
+    except Exception as e:
+        logger.error(f"Voice chat error: {e}")
+        return jsonify({"error": "Voice processing failed. Please try again."}), 500
+
+@app.route("/image-analysis", methods=["POST"])
+def image_analysis():
+    """Handle medical image analysis using Google Gemini Vision"""
+    try:
+        # Check if image file is provided
+        if 'image' in request.files:
+            image_file = request.files['image']
+            query = request.form.get('query', '')
+            
+            if image_file.filename != '':
+                # Save uploaded image with proper extension
+                file_extension = image_file.filename.split('.')[-1].lower()
+                if file_extension not in ['jpg', 'jpeg', 'png', 'gif', 'webp']:
+                    return jsonify({"error": "Unsupported image format. Please use JPG, PNG, GIF, or WebP."}), 400
+                
+                image_path = f"temp_image_{datetime.now().timestamp()}.{file_extension}"
+                image_file.save(image_path)
+                
+                logger.info(f"Analyzing image: {image_path} with query: '{query}'")
+                
+                # Analyze image using voice_vision_handler
+                analysis = voice_vision_handler.analyze_medical_image(image_path, query)
+                
+                # Clean up temp file
+                if os.path.exists(image_path):
+                    os.remove(image_path)
+                
+                if analysis and analysis.strip():
+                    logger.info("Image analysis successful")
+                    return jsonify({
+                        "response": analysis,
+                        "timestamp": datetime.now().isoformat(),
+                        "type": "image_analysis"
+                    })
+                else:
+                    logger.error("No analysis result returned")
+                    return jsonify({"error": "Could not analyze the medical image. Please try again or consult a healthcare professional."}), 400
+            else:
+                return jsonify({"error": "No image file selected"}), 400
+        else:
+            return jsonify({"error": "No image file provided"}), 400
+            
+    except Exception as e:
+        logger.error(f"Image analysis error: {e}")
+        return jsonify({"error": f"Image analysis failed: {str(e)}"}), 500
+
+@app.route("/voice-and-image", methods=["POST"])
+def voice_and_image():
+    """Handle combined voice and image analysis"""
+    try:
+        audio_path = None
+        image_path = None
+        
+        # Handle audio file
+        if 'audio' in request.files:
+            audio_file = request.files['audio']
+            if audio_file.filename != '':
+                audio_path = f"temp_audio_{datetime.now().timestamp()}.mp3"
+                audio_file.save(audio_path)
+        
+        # Handle image file
+        if 'image' in request.files:
+            image_file = request.files['image']
+            if image_file.filename != '':
+                image_path = f"temp_image_{datetime.now().timestamp()}.jpg"
+                image_file.save(image_path)
+        
+        # Process both inputs
+        results = voice_vision_handler.process_voice_and_image(
+            audio_filepath=audio_path,
+            image_filepath=image_path
+        )
+        
+        # Clean up temp files
+        for temp_path in [audio_path, image_path]:
+            if temp_path and os.path.exists(temp_path):
+                os.remove(temp_path)
+        
+        if results['success']:
+            return jsonify({
+                "transcription": results['transcription'],
+                "image_analysis": results['image_analysis'],
+                "response": results['response_text'],
+                "timestamp": datetime.now().isoformat(),
+                "type": "voice_and_image"
+            })
+        else:
+            return jsonify({"error": "Processing failed"}), 400
+            
+    except Exception as e:
+        logger.error(f"Voice and image processing error: {e}")
+        return jsonify({"error": "Combined processing failed"}), 500
+
+@app.route("/text-to-speech", methods=["POST"])
+def text_to_speech():
+    """Convert text response to speech"""
+    try:
+        data = request.get_json()
+        text = data.get('text', '')
+        
+        if not text:
+            return jsonify({"error": "No text provided"}), 400
+        
+        # Generate speech
+        audio_path = f"temp_tts_{datetime.now().timestamp()}.mp3"
+        if voice_vision_handler.text_to_speech_gtts(text, audio_path):
+            # Return audio file
+            return send_from_directory('.', audio_path, as_attachment=True)
+        else:
+            return jsonify({"error": "Text-to-speech failed"}), 500
+            
+    except Exception as e:
+        logger.error(f"Text-to-speech error: {e}")
+        return jsonify({"error": "TTS processing failed"}), 500
+
+def process_chat_message(message: str, mode: str = 'doctor'):
+    """Helper function to process chat messages consistently"""
+    try:
+        # Initialize chat history if not exists
+        if 'chat_history' not in session:
+            session['chat_history'] = []
+        
+        # Create context with patient information
+        context = ""
+        if session.get('patient_info'):
+            patient_data = session['patient_info']
+            context = f"""
+Patient Information:
+- Name: {patient_data.get('name', 'Not provided')}
+- Age: {patient_data.get('age', 'Not provided')}
+- Gender: {patient_data.get('gender', 'Not provided')}
+- Weight: {patient_data.get('weight', 'Not provided')} kg
+- Height: {patient_data.get('height', 'Not provided')} cm
+
+"""
+        
+        # Add chat history context
+        if session['chat_history']:
+            context += "Previous conversation:\n"
+            for msg in session['chat_history'][-5:]:  # Last 5 messages for context
+                context += f"Patient: {msg['user']}\nDoctor: {msg['bot']}\n"
+        
+        # Get response based on mode
+        try:
+            if mode == 'doctor':
+                ai_response = asyncio.run(ai_modes.doctor_conversation_mode(
+                    message=message,
+                    context=context,
+                    patient_info=""
+                ))
+            elif mode == 'knowledge':
+                ai_response = asyncio.run(ai_modes.medical_knowledge_mode(
+                    message=message,
+                    context=context,
+                    patient_info=""
+                ))
+            elif mode == 'report':
+                ai_response = asyncio.run(ai_modes.report_analysis_mode(
+                    message=message,
+                    context=context,
+                    patient_info=""
+                ))
+            else:
+                ai_response = get_fallback_response(message)
+                
+        except Exception as mode_error:
+            logger.error(f"Mode-specific error ({mode}): {str(mode_error)}")
+            ai_response = get_fallback_response(message)
+        
+        # Store in chat history
+        chat_entry = {
+            'user': message,
+            'bot': ai_response,
+            'mode': mode,
+            'timestamp': datetime.now().isoformat()
+        }
+        session['chat_history'].append(chat_entry)
+        
+        # Keep only last 20 exchanges
+        if len(session['chat_history']) > 20:
+            session['chat_history'] = session['chat_history'][-20:]
+        
+        return jsonify({
+            "response": ai_response,
+            "timestamp": chat_entry['timestamp']
+        })
+        
+    except Exception as e:
+        logger.error(f"Process chat message error: {e}")
+        return jsonify({"error": "Processing failed"}), 500
 
 @app.route("/reset_conversation", methods=["POST"])
 def reset_conversation():

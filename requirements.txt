@@ -1,6 +1,8 @@
 numpy<2
 sentence-transformers==2.2.2
 huggingface_hub==0.17.3
+transformers>=4.20.0
+torch>=1.12.0
 langchain
 flask
 pypdf
@@ -11,4 +13,20 @@ langchain_community
 langchain_google_genai
 google-generativeai
 langchain_experimental
+accelerate
+datasets
+tokenizers
+
+# HuggingFace Image Analysis Models
+timm>=0.9.0
+opencv-python>=4.8.0
+torchvision>=0.13.0
+
+# Voice and Vision Dependencies (Using Google APIs)
+speechrecognition>=3.13.0
+pydub>=0.25.1
+pyaudio>=0.2.14
+gtts>=2.5.4
+pillow>=11.1.0
+
 -e .
